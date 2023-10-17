@@ -16,7 +16,6 @@ namespace Domain.Entities
         //Construtor com validação do nome 
         public Category(string name)
         {
-            
             ValidateDomain(name);
         }
 
@@ -26,14 +25,7 @@ namespace Domain.Entities
         {
             
             ValidateDomain(name);
-            DomainExceptionValidation.When(id < 0, "Invalid Id value");
-            DomainExceptionValidation.When(createdAt > DateTime.Now, "Invalid CreatedAt value: THE DATE CANNOT BE LATER THAN THE CURRENT ");
-            DomainExceptionValidation.When(updatedAt > DateTime.Now, "Invalid UpdatedAt value: THE DATE CANNOT BE LATER THAN THE CURRENT ");
-
-
-            Id = id;
-            UpdatedAt = updatedAt;
-            CreatedAt = createdAt;
+            ValidateEntity(id, createdAt, updatedAt);
         }
 
         //metodo para atualizar a categoria 

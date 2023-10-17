@@ -70,10 +70,11 @@ namespace TestDomain
 
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Price value");
         }
-        [Fact]
-        public void CreateCategory_InvalidStock_ExceptionStock()
+        [Theory]
+        [InlineData(-300)]
+        public void CreateCategory_InvalidStock_ExceptionStock(int valueStock)
         {
-            Action action = () => new Product(1, DateTime.Now, DateTime.Now, "Festa da mae Aparecida", "a melhor festa de outubro", 30.00m, -3, "gb.gg"); 
+            Action action = () => new Product(1, DateTime.Now, DateTime.Now, "Festa da mae Aparecida", "a melhor festa de outubro", 30.00m, valueStock, "gb.gg"); 
 
             action.Should().Throw<DomainExceptionValidation>().WithMessage("Invalid Stock value");
         }

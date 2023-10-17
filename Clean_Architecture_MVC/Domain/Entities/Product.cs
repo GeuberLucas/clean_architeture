@@ -25,14 +25,7 @@ namespace Domain.Entities
         public Product(int id, DateTime createdAt, DateTime updatedAt, string name, string description, decimal price, int stock, string urlImage)
         {
             ValidateDomain(name, description, price, stock, urlImage);
-            DomainExceptionValidation.When(id < 0, "Invalid Id value");
-            DomainExceptionValidation.When(createdAt > DateTime.Now, "Invalid CreatedAt value: THE DATE CANNOT BE LATER THAN THE CURRENT ");
-            DomainExceptionValidation.When(updatedAt > DateTime.Now, "Invalid UpdatedAt value: THE DATE CANNOT BE LATER THAN THE CURRENT ");
-           
-
-            Id = id;
-            UpdatedAt = updatedAt;
-            CreatedAt = createdAt;
+            ValidateEntity(id, createdAt, updatedAt);
         }
 
         //metodo para atualizar o produto
@@ -53,7 +46,7 @@ namespace Domain.Entities
             DomainExceptionValidation.When(price < 0, "Invalid Price value");
             DomainExceptionValidation.When(stock < 0, "Invalid Stock value");
 
-            DomainExceptionValidation.When(urlImage.Length >250 , "Url Image is too long, please insert maximum 250 charecters");
+            DomainExceptionValidation.When(urlImage?.Length >250 , "Url Image is too long, please insert maximum 250 charecters");
 
 
 
