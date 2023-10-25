@@ -10,7 +10,7 @@ namespace Infra_Data
     {
         ////Conexão SqlServer Produção local
         public const string dabase_url = "localhost";
-        public const string database_name = "CleanDb";
+        public const string database_name = "clean_database";
         public const string database_user = "root";
         public const string database_password = "B@nc0fgts$2022";
     }
