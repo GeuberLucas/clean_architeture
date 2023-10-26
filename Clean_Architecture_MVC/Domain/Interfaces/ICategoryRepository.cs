@@ -11,9 +11,9 @@ namespace Domain.Interfaces
     {
         Task<IEnumerable<Category>> GetAllCategories();
         Task<Category> GetById(int id);
-        Task<Category> Create(Category category);
-        Task<Category> Update(Category category);
-        Task<Category> Remove(Category category);
+        Task<Category> CreateAsync(Category category);
+        Task<Category> UpdateAsync(Category category);
+        Task<Category> RemoveAsync(Category category);
        
     }
 }

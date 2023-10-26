@@ -10,16 +10,11 @@ using System.Threading.Tasks;
 
 namespace Infra_Data.Repositories
 {
-    class CategoryRepository: ICategoryRepository
+    class ProductRepositoriy : IProductRepository
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
-        public CategoryRepository(IApplicationDbContext applicationDbContext)
-        {
-            _applicationDbContext = applicationDbContext;
-        }
-
-        public async Task<Category> CreateAsync(Category category)
+        public async Task<Product> CreateAsync(Product Product)
         {
             MySqlConnection connection = null;
             try
@@ -38,13 +33,17 @@ namespace Infra_Data.Repositories
                         @updatedAt,
                         @name);
                 ";
-                DynamicParameters categoryParams = new DynamicParameters();
-                categoryParams.Add("@id", category.Id);
-                categoryParams.Add("@createdAt", category.CreatedAt);
-                categoryParams.Add("@updatedAt", category.UpdatedAt);
-                categoryParams.Add("@name", category.Name);
-                await connection.ExecuteAsync(sql, categoryParams, connection.BeginTransaction());
-                return category;
+                DynamicParameters productParams = new DynamicParameters();
+                productParams.Add("@id", Product.Id);
+                productParams.Add("@createdAt", Product.CreatedAt);
+                productParams.Add("@updatedAt", Product.UpdatedAt);
+                productParams.Add("@name", Product.Name);
+                productParams.Add("@description", Product.Description);
+                productParams.Add("@price", Product.Price);
+                productParams.Add("@Stock", Product.Stock);
+                productParams.Add("@urlImage", Product.UrlImage);
+                await connection.ExecuteAsync(sql, productParams, connection.BeginTransaction());
+                return Product;
             }
 
             catch (Exception e)
@@ -57,9 +56,9 @@ namespace Infra_Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Category>> GetAllCategories()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-             MySqlConnection connection = null;
+            MySqlConnection connection = null;
             try
             {
                 connection = _applicationDbContext.GetConnection();
@@ -69,14 +68,19 @@ namespace Infra_Data.Repositories
                     created_at as CreatedAt,
                     updated_at as UpdatedAt,
                     name as Name
-                    FROM categories;
+                        description as Description,
+                        price as Price,
+                        
+                        idCategory as 
+                    FROM products;
+
                 ";
 
-                var allCategories = await connection.QueryAsync<Category>(sql);
+                var allCategories = await connection.QueryAsync<Product>(sql);
 
                 return allCategories;
             }
-            
+
             catch (Exception e)
             {
                 throw e;
@@ -88,7 +92,7 @@ namespace Infra_Data.Repositories
 
         }
 
-        public async Task<Category> GetById(int id)
+        public async Task<Product> GetByIdAsync(int id)
         {
             MySqlConnection connection = null;
             try
@@ -103,10 +107,10 @@ namespace Infra_Data.Repositories
                     FROM categories
                     where id = @id;
                 ";
-                DynamicParameters categoryParams = new DynamicParameters();
-                categoryParams.Add("@id", id);
-                var category = await connection.QueryFirstOrDefaultAsync<Category>(sql, categoryParams,connection.BeginTransaction());
-                return category;
+                DynamicParameters productParams = new DynamicParameters();
+                productParams.Add("@id", id);
+                var Product = await connection.QueryFirstOrDefaultAsync<Product>(sql, productParams, connection.BeginTransaction());
+                return Product;
             }
 
             catch (Exception e)
@@ -119,7 +123,7 @@ namespace Infra_Data.Repositories
             }
         }
 
-        public async Task<Category> RemoveAsync(Category category)
+        public async Task<Product> RemoveAsync(Product Product)
         {
             MySqlConnection connection = null;
             try
@@ -130,11 +134,11 @@ namespace Infra_Data.Repositories
                    DELETE FROM categories
                    WHERE id=@id;
                 ";
-                DynamicParameters categoryParams = new DynamicParameters();
-                categoryParams.Add("@id", category.Id);
-               
-                await connection.ExecuteAsync(sql, categoryParams, connection.BeginTransaction());
-                return category;
+                DynamicParameters productParams = new DynamicParameters();
+                productParams.Add("@id", Product.Id);
+
+                await connection.ExecuteAsync(sql, productParams, connection.BeginTransaction());
+                return Product;
             }
 
             catch (Exception e)
@@ -147,7 +151,7 @@ namespace Infra_Data.Repositories
             }
         }
 
-        public async Task<Category> UpdateAsync(Category category)
+        public async Task<Product> UpdateAsync(Product Product)
         {
             MySqlConnection connection = null;
             try
@@ -163,14 +167,14 @@ namespace Infra_Data.Repositories
                     `name` = @name,
                     WHERE `id` = @id;
                 ";
-                DynamicParameters categoryParams = new DynamicParameters();
-                categoryParams.Add("@id", category.Id);
-                categoryParams.Add("@createdAt", category.CreatedAt);
-                categoryParams.Add("@updatedAt", category.UpdatedAt);
-                categoryParams.Add("@name", category.Name);
+                DynamicParameters productParams = new DynamicParameters();
+                productParams.Add("@id", Product.Id);
+                productParams.Add("@createdAt", Product.CreatedAt);
+                productParams.Add("@updatedAt", Product.UpdatedAt);
+                productParams.Add("@name", Product.Name);
 
-                await connection.ExecuteAsync(sql, categoryParams, connection.BeginTransaction());
-                return category;
+                await connection.ExecuteAsync(sql, productParams, connection.BeginTransaction());
+                return Product;
             }
 
             catch (Exception e)
